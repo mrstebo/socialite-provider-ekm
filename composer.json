@@ -1,0 +1,34 @@
+{
+    "name": "mrstebo/socialite-provider-ekm",
+    "description": "EKM OAuth2 Provider for Laravel Socialite",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steven Atkinson",
+            "email": "mrstebouk@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ext-json": "*",
+        "lcobucci/jwt": "^3.3",
+        "socialiteproviders/manager": "~2.0 || ~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SocialiteProviders\\EKM\\": "src/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mrstebo\\SocialiteProviders\\EKM\\Provider"
+            ]
+        }
+    }
+}

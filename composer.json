@@ -28,7 +28,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Mrstebo\\SocialiteProviders\\EKM\\Provider"
+                "SocialiteProviders\\EKM\\Provider"
             ]
         }
     }

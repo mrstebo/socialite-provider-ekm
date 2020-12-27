@@ -11,7 +11,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": "^7.2",
+        "php": "^7.2|^8.0",
         "ext-json": "*",
         "lcobucci/jwt": "^3.3",
         "socialiteproviders/manager": "~2.0 || ~3.0"

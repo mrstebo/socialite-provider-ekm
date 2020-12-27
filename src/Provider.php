@@ -2,9 +2,10 @@
 
 namespace SocialiteProviders\EKM;
 
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Token\Plain;
 use SocialiteProviders\Manager\OAuth2\AbstractProvider;
 use SocialiteProviders\Manager\OAuth2\User;
-use Lcobucci\JWT\Parser;
 
 class Provider extends AbstractProvider
 {
@@ -48,13 +49,18 @@ class Provider extends AbstractProvider
 
         // return json_decode($response->getBody(), true);
 
-        $parsedToken = (new Parser())->parse($token);
-        $user = [
-            'sub' => $parsedToken->getClaim('sub'),
-            'server_id' => $parsedToken->getClaim('ServerId'),
-        ];
+        $config = Configuration::forUnsecuredSigner();
+        $parsedToken = $config->parser()->parse($token);
 
-        return $user;
+        if ($parsedToken instanceof Plain)
+        {
+            $user = [
+                'sub' => $parsedToken->claims()->get('sub'),
+                'server_id' => $parsedToken->claims()->get('ServerId'),
+            ];
+
+            return $user;
+        }
     }
 
     /**

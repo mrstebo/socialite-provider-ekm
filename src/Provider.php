@@ -40,24 +40,21 @@ class Provider extends AbstractProvider
      */
     protected function getUserByToken($token)
     {
-        // Waiting for documentation for this endpoint
-        // $response = $this->getHttpClient()->get($this->getInstanceUri().'api/v1/account', [
-        //     'headers' => [
-        //         'Authorization' => 'Bearer '.$token,
-        //     ],
-        // ]);
-
-        // return json_decode($response->getBody(), true);
-
+        $response = $this->getHttpClient()->get($this->getInstanceUri().'api/v1/settings/shop_information', [
+            'headers' => [
+                'Authorization' => 'Bearer '.$token,
+            ],
+        ]);
+        $shopInformation = (array) json_decode($response->getBody(), true);
         $config = Configuration::forUnsecuredSigner();
         $parsedToken = $config->parser()->parse($token);
 
         if ($parsedToken instanceof Plain)
         {
-            $user = [
+            $user = array_merge($shopInformation['data'], [
                 'sub' => $parsedToken->claims()->get('sub'),
                 'server_id' => $parsedToken->claims()->get('ServerId'),
-            ];
+            ]);
 
             return $user;
         }
@@ -71,9 +68,9 @@ class Provider extends AbstractProvider
         return (new User())->setRaw($user)->map([
             'id'        => $user['sub'],
             'server_id' => $user['server_id'],
-            // 'name'     => $user['name'],
-            // 'email'    => $user['email'],
-            // 'shop_name' => $user['shop_name']
+            'name'     => $user['first_name'].' '.$user['last_name'],
+            'email'    => $user['email'],
+            'shop_name' => $user['shop_name']
         ]);
     }
 

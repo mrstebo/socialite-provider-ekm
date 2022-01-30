@@ -23,9 +23,16 @@ Please see the [Base Installation Guide](https://socialiteproviders.com/usage/),
 'ekm' => [
   'client_id' => env('EKM_CLIENT_ID'),
   'client_secret' => env('EKM_CLIENT_SECRET'),
-  'redirect' => env('EKM_REDIRECT_URI')
+  'redirect' => env('EKM_REDIRECT_URI'),
+  'scopes' => [
+      'openid',
+      'profile',
+      // Additional scopes
+  ]
 ],
 ```
+
+*The `openid` and `profile` scopes must be set in order to get an EKM users profile*
 
 ### Add provider event listener
 
@@ -47,5 +54,8 @@ protected $listen = [
 You should now be able to use the provider like you would regularly use Socialite (assuming you have the facade installed):
 
 ```php
-return Socialite::driver('ekm')->redirect();
+return Socialite::driver('ekm')
+            ->with(['prompt' => 'login'])
+            ->scopes(config('services.ekm.scopes'))
+            ->redirect();
 ```
